@@ -145,13 +145,14 @@ window.addEventListener('DOMContentLoaded', function() {
     //Импользуем классы для карточек
 
     class MenuCard {
-        constructor(src, alt, title, description, price, parentSelector) {
+        constructor(src, alt, title, description, price, parentSelector, ...classes) {
             this.src = src;
             this.alt = alt;
             this.title = title;
             this.description = description;
             this.price = price;
             this.parent = document.querySelector(parentSelector);
+            this.classes = classes;
             this.transfer = 75;
             this.changeToRub();
         }
@@ -160,8 +161,14 @@ window.addEventListener('DOMContentLoaded', function() {
         }
         render() {
             const card = document.createElement('div');
+            if (this.classes.length === 0) {
+                this.card = 'menu__item';
+                card.classList.add(this.card);
+            } else {
+                this.classes.forEach(className => card.classList.add(className));
+            }
+
             card.innerHTML = `
-            <div class="menu__item">
                 <img src=${this.src} alt=${this.alt}>
                 <h3 class="menu__item-subtitle">${this.title}</h3>
                 <div class="menu__item-descr">${this.description}</div>
@@ -170,7 +177,6 @@ window.addEventListener('DOMContentLoaded', function() {
                   <div class="menu__item-cost">Цена:</div>
                   <div class="menu__item-total"><span>${this.price}</span>руб/день</div>
                 </div>
-            </div>
             `;
             this.parent.append(card);
         }
@@ -182,7 +188,9 @@ window.addEventListener('DOMContentLoaded', function() {
         'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. ' +
         'Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
         '10',
-        '.menu .container'
+        '.menu .container',
+        /*'menu__item',
+        'big'*/
     ).render();
 
     new MenuCard(
@@ -192,7 +200,8 @@ window.addEventListener('DOMContentLoaded', function() {
         'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. ' +
         'Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!',
         '12',
-        '.menu .container'
+        '.menu .container',
+        'menu__item'
     ).render();
 
     new MenuCard(
@@ -203,7 +212,8 @@ window.addEventListener('DOMContentLoaded', function() {
         'происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных ' +
         'вегетарианских стейков.',
         '8',
-        '.menu .container'
+        '.menu .container',
+        'menu__item'
     ).render();
 
 });
